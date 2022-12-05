@@ -1,0 +1,39 @@
+openapi: '3.0.2'
+info:
+  title: 'File Storage API'
+  description: |
+  version: 'v1.0'
+
+servers:
+  - url: '{testTarget}/'
+    description: the system to test on
+    variables:
+      testTarget:
+        enum:
+          - http://localhost:8080
+        default: http://localhost:8080
+
+paths:
+  /files:
+    get:
+      tags:
+        - Files
+      operationId: downloadFile
+      summary: 'download a file as StreamingResponseBody'
+      responses:
+        200:
+          description: 'Retrieves a file'
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+              description: the format is `attachment; filename="test.txt"`
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/StreamingResponseBody'
+
+components:
+  schemas:
+    StreamingResponseBody:
+      type: 'object'
